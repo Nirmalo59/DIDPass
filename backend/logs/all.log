@@ -1,0 +1,102 @@
+[2026-07-04 14:25:14:2514] [[32minfo[39m]: [32m══════════════════════════════════════════════════[39m
+[2026-07-04 14:25:14:2514] [[32minfo[39m]: [32m🚀 DIDPass Backend running on port 4000[39m
+[2026-07-04 14:25:14:2514] [[32minfo[39m]: [32m🔗 API Gateway: http://localhost:4000[39m
+[2026-07-04 14:25:14:2514] [[32minfo[39m]: [32m⚙️  Allowed Origins: http://localhost:3000, http://localhost:3001[39m
+[2026-07-04 14:25:14:2514] [[32minfo[39m]: [32m══════════════════════════════════════════════════[39m
+[2026-07-04 14:40:35:4035] [[35mhttp[39m]: [35m[0mGET /api/health [33m404[0m 6.937 ms - 149[0m[39m
+[2026-07-04 14:55:17:5517] [[35mhttp[39m]: [35m[0mGET / [32m200[0m 5.409 ms - 109[0m[39m
+[2026-07-04 14:55:18:5518] [[35mhttp[39m]: [35m[0mGET /favicon.ico [33m404[0m 0.929 ms - 150[0m[39m
+[2026-07-04 14:56:42:5642] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.643 ms - 159[0m[39m
+[2026-07-04 14:56:44:5644] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.458 ms - 159[0m[39m
+[2026-07-04 14:56:47:5647] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.356 ms - 159[0m[39m
+[2026-07-04 14:56:51:5651] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.301 ms - 159[0m[39m
+[2026-07-04 14:57:01:571] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.506 ms - 159[0m[39m
+[2026-07-04 14:57:17:5717] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.783 ms - 157[0m[39m
+[2026-07-04 14:57:26:5726] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.293 ms - 159[0m[39m
+[2026-07-04 14:57:50:5750] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.954 ms - 159[0m[39m
+[2026-07-04 14:57:50:5750] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.482 ms - 159[0m[39m
+[2026-07-04 14:57:51:5751] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=ISSUER [33m404[0m 1.050 ms - 157[0m[39m
+[2026-07-04 14:58:02:582] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=VERIFIER [33m404[0m 0.647 ms - 157[0m[39m
+[2026-07-04 14:58:07:587] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.679 ms - 157[0m[39m
+[2026-07-04 14:58:14:5814] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.372 ms - 157[0m[39m
+[2026-07-04 14:58:35:5835] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.382 ms - 157[0m[39m
+[2026-07-04 14:59:27:5927] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.920 ms - 157[0m[39m
+[2026-07-04 15:00:01:01] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 1.111 ms - 157[0m[39m
+[2026-07-04 15:00:08:08] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.437 ms - 157[0m[39m
+[2026-07-04 15:00:10:010] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.572 ms - 157[0m[39m
+[2026-07-04 15:00:13:013] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.522 ms - 157[0m[39m
+[2026-07-04 15:00:25:025] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.684 ms - 157[0m[39m
+[2026-07-04 15:00:29:029] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.600 ms - 157[0m[39m
+[2026-07-04 15:01:44:144] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.384 ms - 157[0m[39m
+[2026-07-04 15:02:40:240] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.722 ms - 157[0m[39m
+[2026-07-04 15:02:43:243] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 1.116 ms - 157[0m[39m
+[2026-07-04 15:03:47:347] [[35mhttp[39m]: [35m[0mGET /api/health [33m404[0m 0.232 ms - 149[0m[39m
+[2026-07-04 15:03:56:356] [[35mhttp[39m]: [35m[0mGET /api/health [33m404[0m 0.271 ms - 149[0m[39m
+[2026-07-04 15:04:07:47] [[35mhttp[39m]: [35m[0mGET /api/health [33m404[0m 0.311 ms - 149[0m[39m
+[2026-07-04 15:04:52:452] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=HOLDER [33m404[0m 0.319 ms - 157[0m[39m
+[2026-07-04 15:11:06:116] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.285 ms - 159[0m[39m
+[2026-07-04 15:11:08:118] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.189 ms - 159[0m[39m
+[2026-07-04 15:11:08:118] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.279 ms - 159[0m[39m
+[2026-07-04 15:11:08:118] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.216 ms - 159[0m[39m
+[2026-07-04 15:11:08:118] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.198 ms - 159[0m[39m
+[2026-07-04 15:11:08:118] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.209 ms - 159[0m[39m
+[2026-07-04 15:11:09:119] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.406 ms - 159[0m[39m
+[2026-07-04 15:11:09:119] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.264 ms - 159[0m[39m
+[2026-07-04 15:11:19:1119] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.278 ms - 159[0m[39m
+[2026-07-04 15:11:41:1141] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.219 ms - 159[0m[39m
+[2026-07-04 15:11:42:1142] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.426 ms - 159[0m[39m
+[2026-07-04 15:11:47:1147] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=ISSUER [33m404[0m 0.448 ms - 157[0m[39m
+[2026-07-04 15:11:50:1150] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?walletAddress=0x47F479E2b899d924aA5f0104987eE81185163D51&role=ISSUER [33m404[0m 0.747 ms - 157[0m[39m
+[2026-07-04 15:11:52:1152] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.340 ms - 159[0m[39m
+[2026-07-04 15:12:04:124] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.230 ms - 159[0m[39m
+[2026-07-04 15:12:05:125] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.293 ms - 159[0m[39m
+[2026-07-04 15:12:06:126] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.369 ms - 159[0m[39m
+[2026-07-04 15:12:06:126] [[35mhttp[39m]: [35m[0mPOST /api/issuers/request [33m404[0m 0.516 ms - 159[0m[39m
+[2026-07-04 15:12:42:1242] [[35mhttp[39m]: [35m[0mGET /api/health [33m404[0m 0.242 ms - 149[0m[39m
+[2026-07-04 15:14:16:1416] [[35mhttp[39m]: [35m[0mGET /api/health [33m404[0m 0.337 ms - 149[0m[39m
+[2026-07-04 21:37:39:3739] [[32minfo[39m]: [32m══════════════════════════════════════════════════[39m
+[2026-07-04 21:37:39:3739] [[32minfo[39m]: [32m🚀 DIDPass Backend running on port 4000[39m
+[2026-07-04 21:37:39:3739] [[32minfo[39m]: [32m🔗 API Gateway: http://localhost:4000[39m
+[2026-07-04 21:37:39:3739] [[32minfo[39m]: [32m⚙️  Allowed Origins: http://localhost:3000, http://localhost:3001[39m
+[2026-07-04 21:37:39:3739] [[32minfo[39m]: [32m══════════════════════════════════════════════════[39m
+[2026-07-04 21:44:02:442] [[32minfo[39m]: [32m🔑 Challenge issued for wallet: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 (Nonce: 5b84e66f-9851-48ef-a408-87c8d057f9bd)[39m
+[2026-07-04 21:44:02:442] [[35mhttp[39m]: [35m[0mPOST /api/auth/challenge [32m200[0m 32.485 ms - 467[0m[39m
+[2026-07-04 21:45:12:4512] [[32minfo[39m]: [32m🔑 Challenge issued for wallet: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 (Nonce: 014aded7-7830-4b5c-b798-f914969f186a)[39m
+[2026-07-04 21:45:12:4512] [[35mhttp[39m]: [35m[0mPOST /api/auth/challenge [32m200[0m 26.561 ms - 467[0m[39m
+[2026-07-04 21:49:46:4946] [[32minfo[39m]: [32m🔑 Challenge issued for wallet: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 (Nonce: 67f43698-2ff3-4a90-bb30-2c6a42abb005)[39m
+[2026-07-04 21:49:46:4946] [[35mhttp[39m]: [35m[0mPOST /api/auth/challenge [32m200[0m 21.283 ms - 467[0m[39m
+[2026-07-04 21:49:59:4959] [[32minfo[39m]: [32m🔍 SSO Authentication triggered for Client: TU_PORTAL, Type: student_id, Wallet: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266[39m
+[2026-07-04 21:49:59:4959] [[35mhttp[39m]: [35m[0mPOST /api/auth/verify [33m403[0m 104.950 ms - 103[0m[39m
+[2026-07-04 21:50:52:5052] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [32m200[0m 13.597 ms - 33[0m[39m
+[2026-07-04 21:50:52:5052] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 9.146 ms - 52[0m[39m
+[2026-07-04 21:50:52:5052] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 8.182 ms - -[0m[39m
+[2026-07-04 21:50:52:5052] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 7.049 ms - 52[0m[39m
+[2026-07-04 21:51:02:512] [[32minfo[39m]: [32m🔑 Challenge issued for wallet: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 (Nonce: eb23d45b-6aba-4a5f-ad97-b4fedc4f96a5)[39m
+[2026-07-04 21:51:02:512] [[35mhttp[39m]: [35m[0mPOST /api/auth/challenge [32m200[0m 14.012 ms - 467[0m[39m
+[2026-07-04 21:51:07:517] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 3.377 ms - -[0m[39m
+[2026-07-04 21:51:07:517] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 2.806 ms - 52[0m[39m
+[2026-07-04 21:51:07:517] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 3.716 ms - -[0m[39m
+[2026-07-04 21:51:07:517] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 3.415 ms - 52[0m[39m
+[2026-07-04 21:53:07:537] [[32minfo[39m]: [32m🔑 Challenge issued for wallet: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 (Nonce: 6af390c5-55d0-4aaa-9d67-623308f5f4f4)[39m
+[2026-07-04 21:53:07:537] [[35mhttp[39m]: [35m[0mPOST /api/auth/challenge [32m200[0m 11.338 ms - 467[0m[39m
+[2026-07-04 21:53:07:537] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 12.316 ms - 52[0m[39m
+[2026-07-04 21:53:07:537] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 15.581 ms - -[0m[39m
+[2026-07-04 21:53:30:5330] [[32minfo[39m]: [32m🔑 Challenge issued for wallet: 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 (Nonce: 28c4a77e-176d-4231-83ba-10534c8e9660)[39m
+[2026-07-04 21:53:30:5330] [[35mhttp[39m]: [35m[0mPOST /api/auth/challenge [32m200[0m 16.613 ms - 467[0m[39m
+[2026-07-04 21:53:30:5330] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 7.509 ms - 52[0m[39m
+[2026-07-04 21:53:30:5330] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 12.802 ms - -[0m[39m
+[2026-07-04 21:53:39:5339] [[35mhttp[39m]: [35m[0mGET /api/auth/challenge?address=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 7.076 ms - 157[0m[39m
+[2026-07-04 21:54:57:5457] [[32minfo[39m]: [32m══════════════════════════════════════════════════[39m
+[2026-07-04 21:54:57:5457] [[32minfo[39m]: [32m🚀 DIDPass Backend running on port 4000[39m
+[2026-07-04 21:54:57:5457] [[32minfo[39m]: [32m🔗 API Gateway: http://localhost:4000[39m
+[2026-07-04 21:54:57:5457] [[32minfo[39m]: [32m⚙️  Allowed Origins: http://localhost:3000, http://localhost:3001[39m
+[2026-07-04 21:54:57:5457] [[32minfo[39m]: [32m══════════════════════════════════════════════════[39m
+[2026-07-04 21:55:10:5510] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 16.661 ms - -[0m[39m
+[2026-07-04 21:55:10:5510] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 18.144 ms - 52[0m[39m
+[2026-07-04 21:55:33:5533] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 2.698 ms - 52[0m[39m
+[2026-07-04 21:55:33:5533] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 6.330 ms - -[0m[39m
+[2026-07-04 21:55:33:5533] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 2.078 ms - 52[0m[39m
+[2026-07-04 21:55:33:5533] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 1.694 ms - -[0m[39m
+[2026-07-04 21:56:09:569] [[35mhttp[39m]: [35m[0mGET /api/credentials/wallet/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [36m304[0m 1.603 ms - -[0m[39m
+[2026-07-04 21:56:09:569] [[35mhttp[39m]: [35m[0mGET /api/did/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [33m404[0m 4.806 ms - 52[0m[39m
+[2026-07-04 21:56:09:569] [[35mhttp[39m]: [35m[0mGET /api/demo/status/0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 [32m200[0m 3.279 ms - 56[0m[39m

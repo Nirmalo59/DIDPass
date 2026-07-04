@@ -1,0 +1,130 @@
+// This is your Prisma schema file — the database schema for DIDPass off-chain storage
+// Off-chain stores credential METADATA only; actual hashes live on the blockchain
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Issuer ───────────────────────────────────────────────────────────────────
+// Off-chain copy of approved issuers (mirrors on-chain IssuerRegistry)
+model Issuer {
+  id            String       @id @default(cuid())
+  walletAddress String       @unique
+  name          String
+  type          String       // "university" | "bank" | "government" | "other"
+  logoEmoji     String       @default("🏛️")
+  email         String?
+  website       String?
+  isApproved    Boolean      @default(true)
+  registeredAt  DateTime     @default(now())
+  credentials   Credential[]
+  documents     Document[]
+
+  @@map("issuers")
+}
+
+// ─── Credential ───────────────────────────────────────────────────────────────
+// Off-chain metadata for each issued credential
+// The credentialHash (keccak256) is the on-chain anchor point
+model Credential {
+  id                String    @id @default(cuid())
+  credentialHash    String    @unique  // keccak256 — matches CredentialRegistry on-chain
+  holderAddress     String              // Holder's wallet address (lowercased)
+  holderName        String              // "Nirmal Shrestha"
+  holderEmail       String?             // For email notification
+  issuerAddress     String
+  issuer            Issuer    @relation(fields: [issuerAddress], references: [walletAddress])
+  credentialType    String              // "student_id" | "bank_kyc" | "employee_id"
+  documentHash      String?             // SHA-256 hash of the attached document
+  encryptedFilePath String?             // Path to AES-256-GCM encrypted file
+  ipfsCid           String?             // Mock IPFS CID for document retrieval
+  status            String    @default("PENDING")  // "PENDING" | "ACTIVE" | "REVOKED" | "EXPIRED"
+  txHash            String?             // Blockchain tx hash from issuance
+  issuedAt          DateTime  @default(now())
+  expiresAt         DateTime?
+  claimedAt         DateTime?
+  metadata          String?             // JSON: extra fields (course, semester, etc.)
+
+  @@index([holderAddress])
+  @@index([issuerAddress])
+  @@index([credentialType])
+  @@map("credentials")
+}
+
+// ─── Document ─────────────────────────────────────────────────────────────────
+// Off-chain record of uploaded documents (PDFs, certificates)
+// The sha256Hash is anchored on-chain in DocumentProofRegistry
+model Document {
+  id            String   @id @default(cuid())
+  originalName  String                    // Original filename from upload
+  storedName    String                    // UUID-based stored name
+  mimeType      String                    // "application/pdf"
+  sha256Hash    String   @unique          // SHA-256 of original file (on-chain anchor)
+  encryptedPath String                    // Path to AES-256-GCM encrypted file
+  iv            String                    // AES IV (hex encoded)
+  authTag       String                    // GCM auth tag (hex encoded)
+  ipfsCid       String                    // Mock IPFS CID
+  fileSize      Int                       // Original file size in bytes
+  documentType  String                    // "transcript" | "certificate" | "kyc_document"
+  uploadedBy    String                    // Issuer wallet address
+  issuer        Issuer   @relation(fields: [uploadedBy], references: [walletAddress])
+  txHash        String?                   // On-chain DocumentProofRegistry tx hash
+  uploadedAt    DateTime @default(now())
+
+  @@index([uploadedBy])
+  @@map("documents")
+}
+
+// ─── DIDDocument ──────────────────────────────────────────────────────────────
+// Off-chain DID document storage (full JSON); hash anchored on-chain in DIDRegistry
+model DIDDocument {
+  id            String   @id @default(cuid())
+  walletAddress String   @unique
+  didUri        String   @unique   // "did:didpass:0x1234...abcd"
+  documentHash  String             // SHA-256 of the DID JSON document (on-chain anchor)
+  publicKey     String             // Wallet's public key (derived from address)
+  didDocument   String             // Full DID JSON document (off-chain)
+  txHash        String?            // On-chain DIDRegistry tx hash
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("did_documents")
+}
+
+// ─── AuditLog ─────────────────────────────────────────────────────────────────
+// Off-chain audit log (mirrors + extends on-chain AuditHashLedger)
+model AuditLog {
+  id         String   @id @default(cuid())
+  eventHash  String   @unique   // keccak256 of event data (on-chain anchor)
+  actionType String             // "CREDENTIAL_ISSUED" | "LOGIN_SUCCESS" | etc.
+  actor      String             // Wallet address of the actor
+  details    String             // JSON string: full event context
+  txHash     String?            // On-chain AuditHashLedger tx hash (if logged on-chain)
+  ipAddress  String?            // Client IP
+  userAgent  String?            // Client user agent
+  timestamp  DateTime @default(now())
+
+  @@index([actor])
+  @@index([actionType])
+  @@map("audit_logs")
+}
+
+// ─── Nonce ────────────────────────────────────────────────────────────────────
+// Short-lived EIP-712 challenge nonces (prevents replay attacks)
+model Nonce {
+  id        String   @id @default(cuid())
+  nonce     String   @unique   // UUID v4
+  wallet    String             // Lowercase wallet address
+  used      Boolean  @default(false)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([wallet])
+  @@map("nonces")
+}

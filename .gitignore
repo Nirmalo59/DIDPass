@@ -1,0 +1,9 @@
+node_modules/
+.env
+cache/
+artifacts/
+dist/
+build/
+.vite/
+.next/
+.DS_Store
