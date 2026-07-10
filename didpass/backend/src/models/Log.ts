@@ -7,6 +7,7 @@ export interface ILog extends Document {
   status: 'SUCCESS' | 'FAILED' | 'PENDING' | 'INFO';
   walletAddress?: string; // Optional, to track which wallet initiated it
   ipAddress?: string; // For security tracking
+  endpoint?: string; // The URL route/path (e.g. /api/auth/login)
   createdAt: Date;
 }
 
@@ -16,6 +17,7 @@ const LogSchema: Schema = new Schema({
   status: { type: String, enum: ['SUCCESS', 'FAILED', 'PENDING', 'INFO'], required: true },
   walletAddress: { type: String },
   ipAddress: { type: String },
+  endpoint: { type: String },
   createdAt: { type: Date, default: Date.now },
 });
 

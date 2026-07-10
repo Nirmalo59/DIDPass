@@ -66,6 +66,7 @@ router.post('/verify', async (req: Request, res: Response) => {
 
     if (recoveredAddress.toLowerCase() !== normalizedAddress) {
       await Log.create({
+        endpoint: req.originalUrl,
         action: 'AUTH_FAILED',
         details: 'Signature verification failed. Wallet address mismatch.',
         status: 'FAILED',
@@ -89,6 +90,7 @@ router.post('/verify', async (req: Request, res: Response) => {
       await user.save();
       
       await Log.create({
+        endpoint: req.originalUrl,
         action: 'USER_REGISTERED',
         details: `New user registered with role: ${user.role}`,
         status: 'SUCCESS',
@@ -101,6 +103,7 @@ router.post('/verify', async (req: Request, res: Response) => {
       await user.save();
       
       await Log.create({
+        endpoint: req.originalUrl,
         action: 'WALLET_CONNECTED',
         details: `User logged in successfully via cryptographic signature`,
         status: 'SUCCESS',
@@ -119,6 +122,7 @@ router.post('/verify', async (req: Request, res: Response) => {
     res.json({ token, user: { id: user._id, fullName: user.fullName, email: user.email, role: user.role, walletAddress: user.walletAddress } });
   } catch (error: any) {
     await Log.create({
+      endpoint: req.originalUrl,
       action: 'AUTH_ERROR',
       details: error.message || 'Server error during verification',
       status: 'FAILED',
