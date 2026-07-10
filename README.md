@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=40&pause=1000&color=2563EB&center=true&vCenter=true&width=800&height=80&lines=DIDPass:+Decentralized+Identity;Zero-Knowledge+Authentication;On-Chain+Document+Verification;Web3+Single+Sign-On+(SSO)" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=700&size=40&pause=1000&color=2563EB&center=true&vCenter=true&width=1000&height=80&lines=Decentralized+Identity;and+Passwordless+Authentication+System" alt="Typing SVG" />
 </div>
 
 <p align="center">
-  <strong>DIDPass</strong> is a cutting-edge Decentralized Identity (DID) Provider and Document Verification System. It allows users to authenticate seamlessly into consumer platforms (like a Job Portal) using their MetaMask wallet without passwords, while maintaining a secure, blockchain-anchored cryptographic registry for document verification.
+  <strong>DIDPass</strong> is a cutting-edge Decentralized Identity and Passwordless Authentication System. It allows users to authenticate seamlessly into consumer platforms (like a Job Portal) using their MetaMask wallet without passwords, while maintaining a secure, blockchain-anchored cryptographic registry for document verification.
 </p>
 
 ---
