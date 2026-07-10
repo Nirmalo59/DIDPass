@@ -5,6 +5,7 @@ import { ethers } from 'ethers';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Log from '../models/Log';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -47,17 +48,31 @@ router.post('/issue', upload.single('document'), async (req, res) => {
     if (!registryAddress) {
       return res.status(500).json({ message: 'Smart contract not deployed' });
     }
+    
+    await Log.create({ action: 'DOCUMENT_UPLOADED', details: `File ${req.file.originalname} received for issuance`, status: 'INFO', ipAddress: req.ip });
 
     // 1. Calculate SHA-256 Hash of the raw file buffer
     const hash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
     const bytes32Hash = '0x' + hash;
+    
+    await Log.create({ action: 'HASH_GENERATED', details: `Generated SHA-256: ${bytes32Hash}`, status: 'SUCCESS', ipAddress: req.ip });
 
     // 2. Connect to Smart Contract
     const contract = new ethers.Contract(registryAddress, abi, wallet);
 
     // 3. Send transaction to issue document
+    await Log.create({ action: 'BLOCKCHAIN_TX_SENT', details: `Sending transaction to anchor hash to Hardhat network`, status: 'PENDING', ipAddress: req.ip, walletAddress: wallet.address });
     const tx = await contract.issueDocument(bytes32Hash);
     await tx.wait(); // Wait for it to be mined
+    
+    await Log.create({ 
+      action: 'DOCUMENT_ISSUED', 
+      details: `Document successfully anchored to blockchain`, 
+      status: 'SUCCESS', 
+      transactionHash: tx.hash,
+      walletAddress: wallet.address,
+      ipAddress: req.ip 
+    });
 
     res.json({
       message: 'Document issued successfully on the blockchain!',
@@ -66,9 +81,11 @@ router.post('/issue', upload.single('document'), async (req, res) => {
     });
   } catch (err: any) {
     if (err.message.includes('Document already exists')) {
+      await Log.create({ action: 'ISSUANCE_FAILED', details: `Document already exists in registry`, status: 'FAILED', ipAddress: req.ip });
       return res.status(400).json({ message: 'This exact document has already been issued.' });
     }
     console.error(err);
+    await Log.create({ action: 'ISSUANCE_ERROR', details: err.message || 'Server error', status: 'FAILED', ipAddress: req.ip });
     res.status(500).json({ message: 'Server error during issuance' });
   }
 });
@@ -86,20 +103,32 @@ router.post('/verify', upload.single('document'), async (req, res) => {
     if (!registryAddress) {
       return res.status(500).json({ message: 'Smart contract not deployed' });
     }
+    
+    await Log.create({ action: 'VERIFICATION_STARTED', details: `File ${req.file.originalname} received for verification`, status: 'INFO', ipAddress: req.ip });
 
     // 1. Calculate SHA-256 Hash of the provided file
     const hash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
     const bytes32Hash = '0x' + hash;
+    
+    await Log.create({ action: 'HASH_GENERATED', details: `Generated SHA-256 for verification: ${bytes32Hash}`, status: 'SUCCESS', ipAddress: req.ip });
 
     // 2. Connect to Smart Contract (Read-only, no wallet needed)
     const contract = new ethers.Contract(registryAddress, abi, provider);
 
     // 3. Query the blockchain
     try {
+      await Log.create({ action: 'BLOCKCHAIN_QUERY', details: `Querying registry for hash ${bytes32Hash}`, status: 'INFO', ipAddress: req.ip });
       const result = await contract.verifyDocument(bytes32Hash);
       const issuer = result[0];
       const timestamp = new Date(Number(result[1]) * 1000).toLocaleString();
       const isValid = result[2];
+      
+      await Log.create({ 
+        action: 'VERIFICATION_SUCCESS', 
+        details: `Document is authentic. Issued by ${issuer}`, 
+        status: 'SUCCESS', 
+        ipAddress: req.ip 
+      });
 
       res.json({
         authentic: true,
@@ -111,6 +140,12 @@ router.post('/verify', upload.single('document'), async (req, res) => {
       });
     } catch (err: any) {
       if (err.message.includes('Document not found')) {
+        await Log.create({ 
+          action: 'VERIFICATION_FAILED', 
+          details: `Document not found in registry (Possible forgery detected) for hash ${bytes32Hash}`, 
+          status: 'FAILED', 
+          ipAddress: req.ip 
+        });
         return res.json({
           authentic: false,
           documentHash: bytes32Hash,
@@ -119,8 +154,9 @@ router.post('/verify', upload.single('document'), async (req, res) => {
       }
       throw err;
     }
-  } catch (err) {
+  } catch (err: any) {
     console.error(err);
+    await Log.create({ action: 'VERIFICATION_ERROR', details: err.message || 'Server error', status: 'FAILED', ipAddress: req.ip });
     res.status(500).json({ message: 'Server error during verification' });
   }
 });

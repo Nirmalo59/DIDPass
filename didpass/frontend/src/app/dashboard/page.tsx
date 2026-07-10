@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -68,6 +69,18 @@ export default function Dashboard() {
             <h1 className="text-2xl font-bold tracking-tight">DID<span className="text-blue-500">Pass</span> Dashboard</h1>
           </div>
           <div className="flex items-center gap-4">
+            {/* Show logs link only if Admin or Issuer if desired, but for this demo, anyone can view logs */}
+            <Link 
+              href="/logs"
+              className="px-4 py-2 bg-green-600/10 text-green-500 hover:bg-green-600/20 rounded-lg text-sm font-medium transition-colors border border-green-500/20 flex items-center gap-2"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              </span>
+              Live Audit Logs
+            </Link>
+            
             <button 
               onClick={handleLogout}
               className="px-4 py-2 bg-red-600/10 text-red-500 hover:bg-red-600/20 rounded-lg text-sm font-medium transition-colors border border-red-500/20"

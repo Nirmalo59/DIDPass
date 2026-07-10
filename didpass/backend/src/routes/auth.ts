@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { ethers } from 'ethers';
 import jwt from 'jsonwebtoken';
 import User from '../models/User';
+import Log from '../models/Log';
 
 const router = Router();
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key-for-coursework-only';
@@ -64,6 +65,13 @@ router.post('/verify', async (req: Request, res: Response) => {
     const recoveredAddress = ethers.verifyMessage(expectedNonceMsg, signature);
 
     if (recoveredAddress.toLowerCase() !== normalizedAddress) {
+      await Log.create({
+        action: 'AUTH_FAILED',
+        details: 'Signature verification failed. Wallet address mismatch.',
+        status: 'FAILED',
+        walletAddress: normalizedAddress,
+        ipAddress: req.ip
+      });
       return res.status(401).json({ message: 'Signature verification failed. Wallet address mismatch.' });
     }
 
@@ -79,10 +87,26 @@ router.post('/verify', async (req: Request, res: Response) => {
         role: req.body.isIssuer ? 'ISSUER' : 'HOLDER'
       });
       await user.save();
+      
+      await Log.create({
+        action: 'USER_REGISTERED',
+        details: `New user registered with role: ${user.role}`,
+        status: 'SUCCESS',
+        walletAddress: normalizedAddress,
+        ipAddress: req.ip
+      });
     } else {
       // Update nonce to prevent replay attacks
       user.nonce = Math.floor(Math.random() * 1000000).toString();
       await user.save();
+      
+      await Log.create({
+        action: 'WALLET_CONNECTED',
+        details: `User logged in successfully via cryptographic signature`,
+        status: 'SUCCESS',
+        walletAddress: normalizedAddress,
+        ipAddress: req.ip
+      });
     }
 
     // Issue JWT
@@ -93,7 +117,13 @@ router.post('/verify', async (req: Request, res: Response) => {
     );
 
     res.json({ token, user: { id: user._id, fullName: user.fullName, email: user.email, role: user.role, walletAddress: user.walletAddress } });
-  } catch (error) {
+  } catch (error: any) {
+    await Log.create({
+      action: 'AUTH_ERROR',
+      details: error.message || 'Server error during verification',
+      status: 'FAILED',
+      ipAddress: req.ip
+    });
     res.status(500).json({ message: 'Server error during verification', error });
   }
 });
