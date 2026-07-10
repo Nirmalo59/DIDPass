@@ -107,87 +107,74 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Role-Based Access Control: Only show Issuance UI to ISSUERS */}
-          {user.role === 'ISSUER' || user.role === 'ADMIN' ? (
-            <div className="bg-gray-950 border border-gray-800 rounded-2xl p-8 shadow-xl relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500 rounded-full blur-[120px] opacity-10 pointer-events-none"></div>
-              
-              <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]"></span>
-                Issue Document (On-Chain)
-              </h2>
-              
-              <p className="text-sm text-gray-400 mb-8 leading-relaxed">
-                As an authorized issuer, you can upload a document here. Our system will generate a mathematically unbreakable SHA-256 hash and anchor it permanently to the blockchain.
-              </p>
+          <div className="bg-gray-950 border border-gray-800 rounded-2xl p-8 shadow-xl relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500 rounded-full blur-[120px] opacity-10 pointer-events-none"></div>
+            
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <span className="w-3 h-3 rounded-full bg-purple-500 shadow-[0_0_8px_rgba(168,85,247,0.8)]"></span>
+              Issue Document (On-Chain)
+            </h2>
+            
+            <p className="text-sm text-gray-400 mb-8 leading-relaxed">
+              As an authorized issuer, you can upload a document here. Our system will generate a mathematically unbreakable SHA-256 hash and anchor it permanently to the blockchain.
+            </p>
 
-              <form onSubmit={handleIssueDocument} className="space-y-6">
-                <div className="border-2 border-dashed border-gray-700 rounded-xl p-8 text-center hover:border-gray-500 transition-colors bg-black/50">
-                  <input 
-                    type="file" 
-                    id="doc-upload" 
-                    className="hidden" 
-                    onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} 
-                  />
-                  <label htmlFor="doc-upload" className="cursor-pointer block">
-                    {file ? (
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center">📄</div>
-                        <span className="text-blue-400 font-medium truncate max-w-[200px]">{file.name}</span>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col items-center gap-2">
-                        <div className="w-12 h-12 bg-gray-800 text-gray-400 rounded-full flex items-center justify-center">⬆️</div>
-                        <span className="text-gray-400">Click to select a document</span>
-                      </div>
-                    )}
-                  </label>
-                </div>
-
-                <button 
-                  type="submit" 
-                  disabled={isIssuing || !file}
-                  className="w-full py-4 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white rounded-xl font-bold text-lg transition-colors shadow-[0_0_15px_rgba(168,85,247,0.4)]"
-                >
-                  {isIssuing ? "Anchoring Hash to Blockchain..." : "Anchor to Blockchain"}
-                </button>
-              </form>
-
-              {issueResult && (
-                <div className={`mt-6 p-5 rounded-xl text-sm break-words relative overflow-hidden ${issueResult.success ? 'bg-green-900/20 border border-green-800' : 'bg-red-900/20 border border-red-800'}`}>
-                  {issueResult.success && <div className="absolute top-0 right-0 w-full h-1 bg-green-500"></div>}
-                  {!issueResult.success && <div className="absolute top-0 right-0 w-full h-1 bg-red-500"></div>}
-                  
-                  <p className={`font-bold mb-3 ${issueResult.success ? 'text-green-400' : 'text-red-400'}`}>
-                    {issueResult.message}
-                  </p>
-                  
-                  {issueResult.success && (
-                    <div className="mt-4 p-3 bg-black/60 rounded-lg text-xs font-mono space-y-2 text-gray-300">
-                      <div>
-                        <span className="text-gray-500 block mb-1">Document Hash (SHA-256)</span>
-                        <span className="text-green-300">{issueResult.documentHash}</span>
-                      </div>
-                      <div>
-                        <span className="text-gray-500 block mb-1">Transaction ID</span>
-                        <span className="text-purple-300">{issueResult.transactionHash}</span>
-                      </div>
+            <form onSubmit={handleIssueDocument} className="space-y-6">
+              <div className="border-2 border-dashed border-gray-700 rounded-xl p-8 text-center hover:border-gray-500 transition-colors bg-black/50">
+                <input 
+                  type="file" 
+                  id="doc-upload" 
+                  className="hidden" 
+                  onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} 
+                />
+                <label htmlFor="doc-upload" className="cursor-pointer block">
+                  {file ? (
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-12 h-12 bg-blue-500/20 text-blue-400 rounded-full flex items-center justify-center">📄</div>
+                      <span className="text-blue-400 font-medium truncate max-w-[200px]">{file.name}</span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-12 h-12 bg-gray-800 text-gray-400 rounded-full flex items-center justify-center">⬆️</div>
+                      <span className="text-gray-400">Click to select a document</span>
                     </div>
                   )}
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="bg-gray-950/50 border border-gray-800/50 rounded-2xl p-8 flex flex-col items-center justify-center text-center">
-              <div className="w-16 h-16 bg-gray-900 rounded-full flex items-center justify-center mb-4 border border-gray-800">
-                <span className="text-2xl">🔒</span>
+                </label>
               </div>
-              <h3 className="text-lg font-bold text-gray-300 mb-2">Restricted Access</h3>
-              <p className="text-sm text-gray-500 max-w-sm">
-                Your identity is registered as a <strong className="text-gray-300">HOLDER</strong>. You do not have permission to issue documents to the blockchain. Only Authorized <strong className="text-purple-400">ISSUERS</strong> can access this console.
-              </p>
-            </div>
-          )}
+
+              <button 
+                type="submit" 
+                disabled={isIssuing || !file}
+                className="w-full py-4 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 text-white rounded-xl font-bold text-lg transition-colors shadow-[0_0_15px_rgba(168,85,247,0.4)]"
+              >
+                {isIssuing ? "Anchoring Hash to Blockchain..." : "Anchor to Blockchain"}
+              </button>
+            </form>
+
+            {issueResult && (
+              <div className={`mt-6 p-5 rounded-xl text-sm break-words relative overflow-hidden ${issueResult.success ? 'bg-green-900/20 border border-green-800' : 'bg-red-900/20 border border-red-800'}`}>
+                {issueResult.success && <div className="absolute top-0 right-0 w-full h-1 bg-green-500"></div>}
+                {!issueResult.success && <div className="absolute top-0 right-0 w-full h-1 bg-red-500"></div>}
+                
+                <p className={`font-bold mb-3 ${issueResult.success ? 'text-green-400' : 'text-red-400'}`}>
+                  {issueResult.message}
+                </p>
+                
+                {issueResult.success && (
+                  <div className="mt-4 p-3 bg-black/60 rounded-lg text-xs font-mono space-y-2 text-gray-300">
+                    <div>
+                      <span className="text-gray-500 block mb-1">Document Hash (SHA-256)</span>
+                      <span className="text-green-300">{issueResult.documentHash}</span>
+                    </div>
+                    <div>
+                      <span className="text-gray-500 block mb-1">Transaction ID</span>
+                      <span className="text-purple-300">{issueResult.transactionHash}</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </main>
