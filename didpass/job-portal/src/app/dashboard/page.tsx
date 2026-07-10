@@ -36,7 +36,8 @@ function DashboardContent() {
     } else {
       setUser(JSON.parse(storedUser));
     }
-  }, [searchParams, router]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams]);
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();

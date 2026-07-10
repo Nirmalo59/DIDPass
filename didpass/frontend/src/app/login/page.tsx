@@ -87,7 +87,6 @@ export default function LoginPage() {
       localStorage.setItem("didpass_user", JSON.stringify(verifyData.user));
       
       // If we are in an SSO OAuth flow (came from /authorize), let's redirect them back there.
-      const searchParams = new URLSearchParams(window.location.search);
       const redirectUri = searchParams.get("redirect_uri");
       const clientId = searchParams.get("client_id");
       
