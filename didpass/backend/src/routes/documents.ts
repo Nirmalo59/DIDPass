@@ -6,6 +6,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import Log from '../models/Log';
+import { encryptFile } from '../utils/crypto';
+import { uploadToIPFSSimulator } from '../utils/ipfs';
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
@@ -31,13 +33,16 @@ const abi = [
 // Here we use Hardhat's default Account #0 as the "Issuer".
 const ISSUER_PRIVATE_KEY = "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
 
+// Server AES Master Key (in real life, load from .env)
+const AES_MASTER_KEY = process.env.AES_MASTER_KEY || "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef";
+
 // Provider connected to the local Hardhat node
 const provider = new ethers.JsonRpcProvider('http://127.0.0.1:8545');
 const wallet = new ethers.Wallet(ISSUER_PRIVATE_KEY, provider);
 
 /**
  * Route: POST /api/documents/issue
- * Desc: Hashes an uploaded document and anchors it on the blockchain.
+ * Desc: Hashes an uploaded document, encrypts it, stores on IPFS, and anchors hash on the blockchain.
  */
 router.post('/issue', upload.single('document'), async (req, res) => {
   try {
@@ -57,7 +62,18 @@ router.post('/issue', upload.single('document'), async (req, res) => {
     
     await Log.create({ action: 'HASH_GENERATED', details: `Generated SHA-256: ${bytes32Hash}`, status: 'SUCCESS', ipAddress: req.ip });
 
-    // 2. Connect to Smart Contract
+    // 2. Encrypt the physical PDF using AES-256-GCM
+    const { iv, authTag, ciphertext } = encryptFile(req.file.buffer, AES_MASTER_KEY);
+    
+    // We concatenate IV + AuthTag + Ciphertext so we can easily decrypt it later
+    const fullEncryptedBuffer = Buffer.concat([iv, authTag, ciphertext]);
+    await Log.create({ action: 'FILE_ENCRYPTED', details: `File encrypted using AES-256-GCM. Buffer size: ${fullEncryptedBuffer.length} bytes`, status: 'SUCCESS', ipAddress: req.ip });
+
+    // 3. Upload to IPFS (Simulated)
+    const cid = await uploadToIPFSSimulator(fullEncryptedBuffer);
+    await Log.create({ action: 'IPFS_UPLOAD', details: `Encrypted file successfully pinned to IPFS. CID: ${cid}`, status: 'SUCCESS', ipAddress: req.ip });
+
+    // 4. Connect to Smart Contract
     const contract = new ethers.Contract(registryAddress, abi, wallet);
 
     // 3. Send transaction to issue document
