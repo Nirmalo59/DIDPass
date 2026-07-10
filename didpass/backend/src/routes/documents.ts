@@ -58,12 +58,17 @@ router.post('/issue', upload.single('document'), async (req, res) => {
     
     await Log.create({ endpoint: req.originalUrl, action: 'DOCUMENT_UPLOADED', details: `File ${req.file.originalname} received for issuance`, status: 'INFO', ipAddress: req.ip });
 
+    console.log(`\n[+] New Issuance Request: ${req.file.originalname}`);
+    console.log(`[~] Generating SHA-256 hash for document...`);
     const hash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
     const bytes32Hash = '0x' + hash;
+    console.log(`[✓] SHA-256 Hash Generated: ${bytes32Hash}`);
     await Log.create({ endpoint: req.originalUrl, action: 'HASH_GENERATED', details: `Generated SHA-256: ${bytes32Hash}`, status: 'SUCCESS', ipAddress: req.ip });
 
+    console.log(`[~] Encrypting document using AES-256-GCM algorithm...`);
     const { iv, authTag, ciphertext } = encryptFile(req.file.buffer, AES_MASTER_KEY);
     const fullEncryptedBuffer = Buffer.concat([iv, authTag, ciphertext]);
+    console.log(`[✓] Document successfully encrypted via AES-256-GCM.`);
     await Log.create({ endpoint: req.originalUrl, action: 'FILE_ENCRYPTED', details: `File encrypted using AES-256-GCM.`, status: 'SUCCESS', ipAddress: req.ip });
 
     const cid = await uploadToIPFSSimulator(fullEncryptedBuffer);
@@ -173,18 +178,28 @@ router.post('/verify', upload.single('document'), async (req, res) => {
     
     await Log.create({ endpoint: req.originalUrl, action: 'VERIFICATION_STARTED', details: `File ${req.file.originalname} received for verification`, status: 'INFO', ipAddress: req.ip });
 
+    console.log(`\n[+] New Verification Request: ${req.file.originalname}`);
+    console.log(`[~] Generating SHA-256 hash for the uploaded verification document...`);
     const hash = crypto.createHash('sha256').update(req.file.buffer).digest('hex');
     const bytes32Hash = '0x' + hash;
+    console.log(`[✓] Target SHA-256 Hash Generated: ${bytes32Hash}`);
     await Log.create({ endpoint: req.originalUrl, action: 'HASH_GENERATED', details: `Generated SHA-256 for verification: ${bytes32Hash}`, status: 'SUCCESS', ipAddress: req.ip });
 
     const contract = new ethers.Contract(registryAddress, abi, provider);
 
     try {
+      console.log(`[~] Comparing target hash against DocumentRegistry Smart Contract on Blockchain...`);
       await Log.create({ endpoint: req.originalUrl, action: 'BLOCKCHAIN_QUERY', details: `Querying registry for hash ${bytes32Hash}`, status: 'INFO', ipAddress: req.ip });
+      
       const result = await contract.verifyDocument(bytes32Hash);
       const issuer = result[0];
       const timestamp = new Date(Number(result[1]) * 1000).toLocaleString();
       const isValid = result[2];
+      
+      console.log(`[✓] Blockchain response received!`);
+      console.log(`    -> Authentic: YES`);
+      console.log(`    -> Issued By: ${issuer}`);
+      console.log(`    -> Timestamp: ${timestamp}`);
       
       await Log.create({ 
         endpoint: req.originalUrl,
@@ -204,6 +219,9 @@ router.post('/verify', upload.single('document'), async (req, res) => {
       });
     } catch (err: any) {
       if (err.message.includes('Document not found')) {
+        console.log(`[X] Blockchain response received!`);
+        console.log(`    -> Authentic: NO`);
+        console.log(`    -> Reason: Hash not found in DocumentRegistry (Potential Forgery)`);
         await Log.create({ 
           endpoint: req.originalUrl,
           action: 'VERIFICATION_FAILED', 
