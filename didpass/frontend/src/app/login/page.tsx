@@ -57,6 +57,10 @@ export default function LoginPage() {
       const signer = await provider.getSigner();
       const signature = await signer.signMessage(nonceData.nonce);
 
+      // Check if this is an issuer registration
+      const searchParams = new URLSearchParams(window.location.search);
+      const isIssuer = searchParams.get("isissuer") === "true";
+
       // 5. Verify Signature with Backend
       const verifyRes = await fetch(`http://127.0.0.1:5555/api/auth/verify`, {
         method: "POST",
@@ -68,6 +72,7 @@ export default function LoginPage() {
           // Only send registration fields if creating an account
           fullName: !isLogin ? formData.fullName : undefined,
           email: !isLogin ? formData.email : undefined,
+          isIssuer, // Pass the role flag to backend
         })
       });
 

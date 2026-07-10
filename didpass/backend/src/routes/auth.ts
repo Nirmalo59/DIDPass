@@ -76,6 +76,7 @@ router.post('/verify', async (req: Request, res: Response) => {
         fullName,
         email,
         walletAddress: normalizedAddress,
+        role: req.body.isIssuer ? 'ISSUER' : 'HOLDER'
       });
       await user.save();
     } else {
