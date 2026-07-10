@@ -22,6 +22,19 @@ export default function AuditLogs() {
 
   // Poll for new logs every 3 seconds
   useEffect(() => {
+    // Strict RBAC: Only ADMINs can view the web logs
+    const userData = localStorage.getItem("didpass_user");
+    if (!userData) {
+      router.push("/login");
+      return;
+    }
+    
+    const user = JSON.parse(userData);
+    if (user.role !== 'ADMIN') {
+      router.push("/dashboard"); // Kick out Holders AND Issuers
+      return;
+    }
+
     const fetchLogs = async () => {
       try {
         const res = await fetch("http://127.0.0.1:5555/api/logs");
