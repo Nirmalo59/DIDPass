@@ -8,7 +8,7 @@ import { ethers } from "ethers";
 
 export default function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const [formData, setFormData] = useState({ fullName: "", email: "" });
+  const [formData, setFormData] = useState({ fullName: "", email: "", organizationName: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -25,7 +25,20 @@ export default function LoginPage() {
         }
       });
     }
+    
+    // Check if registering as issuer or accessing admin route
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("isissuer") === "true") {
+      setIsIssuer(true);
+    }
+    if (params.get("isadmin") === "true") {
+      setIsAdminRoute(true);
+      setIsLogin(true); // Force login mode for admins
+    }
   }, []);
+
+  const [isIssuer, setIsIssuer] = useState(false);
+  const [isAdminRoute, setIsAdminRoute] = useState(false);
 
   const handleWalletConnect = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,7 +72,7 @@ export default function LoginPage() {
 
       // Check if this is an issuer registration
       const searchParams = new URLSearchParams(window.location.search);
-      const isIssuer = searchParams.get("isissuer") === "true";
+      const isIssuerParam = searchParams.get("isissuer") === "true";
 
       // 5. Verify Signature with Backend
       const verifyRes = await fetch(`http://127.0.0.1:5555/api/auth/verify`, {
@@ -72,7 +85,8 @@ export default function LoginPage() {
           // Only send registration fields if creating an account
           fullName: !isLogin ? formData.fullName : undefined,
           email: !isLogin ? formData.email : undefined,
-          isIssuer, // Pass the role flag to backend
+          organizationName: (!isLogin && isIssuerParam) ? formData.organizationName : undefined,
+          isIssuer: isIssuerParam, // Pass the role flag to backend
         })
       });
 
@@ -114,12 +128,14 @@ export default function LoginPage() {
 
         <div className="text-center mb-8 relative z-10">
           <h1 className="text-3xl font-bold text-white mb-2">
-            {isLogin ? "Welcome Back" : "Create Identity"}
+            {isAdminRoute ? "Admin Console Login" : (isLogin ? "Welcome Back" : "Create Identity")}
           </h1>
           <p className="text-gray-400 text-sm">
-            {isLogin 
-              ? "Connect your cryptographic wallet to access your secure vault." 
-              : "Register your Wallet Address to start managing your identity."}
+            {isAdminRoute 
+              ? "Connect the Master Wallet to access the Admin Dashboard."
+              : (isLogin 
+                ? "Connect your cryptographic wallet to access your secure vault." 
+                : "Register your Wallet Address to start managing your identity.")}
           </p>
         </div>
 
@@ -155,6 +171,20 @@ export default function LoginPage() {
                   required={!isLogin}
                 />
               </div>
+
+              {isIssuer && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Organization Name (e.g. University)</label>
+                  <input 
+                    type="text" 
+                    value={formData.organizationName}
+                    onChange={(e) => setFormData({...formData, organizationName: e.target.value})}
+                    className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
+                    placeholder="University of DIDPass"
+                    required={!isLogin && isIssuer}
+                  />
+                </div>
+              )}
             </>
           )}
 
@@ -176,20 +206,22 @@ export default function LoginPage() {
           </div>
         </form>
 
-        <div className="mt-6 text-center relative z-10">
-          <p className="text-sm text-gray-400">
-            {isLogin ? "Don't have an identity?" : "Already have an identity?"}{" "}
-            <button 
-              onClick={() => {
-                setIsLogin(!isLogin);
-                setError("");
-              }}
-              className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
-            >
-              {isLogin ? "Create one here" : "Sign in here"}
-            </button>
-          </p>
-        </div>
+        {!isAdminRoute && (
+          <div className="mt-6 text-center relative z-10">
+            <p className="text-sm text-gray-400">
+              {isLogin ? "Don't have an identity?" : "Already have an identity?"}{" "}
+              <button 
+                onClick={() => {
+                  setIsLogin(!isLogin);
+                  setError("");
+                }}
+                className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+              >
+                {isLogin ? "Create one here" : "Sign in here"}
+              </button>
+            </p>
+          </div>
+        )}
 
         <div className="mt-8 text-center relative z-10">
           <Link href="/" className="text-sm text-gray-500 hover:text-white transition-colors">

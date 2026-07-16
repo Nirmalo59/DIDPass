@@ -97,9 +97,17 @@ router.post('/issue', upload.single('document'), async (req, res) => {
       { expiresIn: '10m' }
     );
     
-    // In a real email, this link would point to the frontend, which would fetch the backend.
-    // To make it simple for the user to download instantly, we provide the backend API link.
     const magicLink = `http://127.0.0.1:5555/api/documents/download?token=${downloadToken}`;
+
+    console.log(`[🪄] Magic Download Link Generated: ${magicLink}`);
+    console.log(`[⏳] 10-Minute Expiration Timer Started for ${req.file.originalname}...`);
+
+    // Presentation feature: Terminal countdown logs
+    setTimeout(() => console.log(`[⏳] Magic Link Timer: 1 minute gone (9 mins remaining for ${req.file.originalname})`), 1 * 60 * 1000);
+    setTimeout(() => console.log(`[⏳] Magic Link Timer: 5 minutes gone (5 mins remaining for ${req.file.originalname})`), 5 * 60 * 1000);
+    setTimeout(() => console.log(`[⏳] Magic Link Timer: 7 minutes gone (3 mins remaining for ${req.file.originalname})`), 7 * 60 * 1000);
+    setTimeout(() => console.log(`[⏳] Magic Link Timer: 9 minutes gone (1 min remaining for ${req.file.originalname})`), 9 * 60 * 1000);
+    setTimeout(() => console.log(`[❌] Magic Link EXPIRED. Access revoked for ${req.file.originalname}.`), 10 * 60 * 1000);
 
     res.json({
       message: 'Document issued successfully!',
@@ -229,6 +237,7 @@ router.post('/verify', upload.single('document'), async (req, res) => {
           status: 'FAILED', 
           ipAddress: req.ip 
         });
+        
         return res.json({
           authentic: false,
           documentHash: bytes32Hash,

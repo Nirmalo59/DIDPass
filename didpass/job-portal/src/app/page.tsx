@@ -8,7 +8,7 @@ export default function JobPortalHome() {
   const handleDIDPassLogin = () => {
     setLoading(true);
     // Redirect to DIDPass Identity Provider for SSO
-    window.location.href = "http://localhost:3000/authorize?client_id=jobportal&redirect_uri=http://localhost:3001/dashboard";
+    window.location.href = "http://localhost:3000/authorize?client_id=jobportal&redirect_uri=http://localhost:3003/dashboard";
   };
 
   return (

@@ -76,9 +76,16 @@ export default function Dashboard() {
           </div>
           <h1 className="text-xl font-bold tracking-tight">DIDPass</h1>
         </div>
-        <button onClick={handleLogout} className="text-sm font-semibold text-red-500 hover:text-red-700">
-          Log Out
-        </button>
+        <div className="flex gap-4 items-center">
+          {user.role === 'ADMIN' && (
+            <Link href="/admin" className="text-sm font-bold text-blue-600 hover:text-blue-800 bg-blue-50 px-3 py-1 rounded-md border border-blue-200">
+              Admin Dashboard
+            </Link>
+          )}
+          <button onClick={handleLogout} className="text-sm font-semibold text-red-500 hover:text-red-700">
+            Log Out
+          </button>
+        </div>
       </header>
 
       {/* Main Desktop Container */}
@@ -156,6 +163,20 @@ export default function Dashboard() {
                   />
                 </div>
               </div>
+
+              {user.organizationName && (
+                <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-8">
+                  <label className="md:w-1/4 text-gray-900 font-semibold text-sm md:text-right">Organization</label>
+                  <div className="flex-1">
+                    <input 
+                      type="text" 
+                      value={user.organizationName} 
+                      disabled 
+                      className="w-full border border-gray-300 bg-gray-50 rounded-md px-3 py-2 text-sm text-gray-900 focus:outline-none"
+                    />
+                  </div>
+                </div>
+              )}
 
               <div className="flex flex-col md:flex-row md:items-start gap-2 md:gap-8">
                 <label className="md:w-1/4 text-gray-900 font-semibold text-sm md:text-right mt-2">Wallet Address</label>

@@ -20,6 +20,11 @@ router.get('/nonce', async (req: Request, res: Response) => {
     // Find user by wallet address
     let user = await User.findOne({ walletAddress: normalizedAddress });
     
+    // If user is suspended, block immediately
+    if (user && user.status === 'SUSPENDED') {
+      return res.status(403).json({ message: 'Account is suspended. Contact administrator.' });
+    }
+
     // If user doesn't exist, this is a registration attempt. We'll return a generic nonce anyway.
     // Real implementation might separate registration/login, but for passwordless they merge!
     if (!user) {
@@ -50,9 +55,11 @@ router.post('/verify', async (req: Request, res: Response) => {
     const normalizedAddress = address.toLowerCase();
     let user = await User.findOne({ walletAddress: normalizedAddress });
 
-    // Determine the expected message
     let expectedNonceMsg = "";
     if (user) {
+      if (user.status === 'SUSPENDED') {
+        return res.status(403).json({ message: 'Account is suspended. Contact administrator.' });
+      }
       expectedNonceMsg = `Sign this message to authenticate with DIDPass: ${user.nonce}`;
     } else {
       // For new registrations, frontend must pass the original message they signed
@@ -78,14 +85,29 @@ router.post('/verify', async (req: Request, res: Response) => {
 
     // If verification passes and user doesn't exist, register them
     if (!user) {
-      if (!fullName || !email) {
+      let finalFullName = fullName;
+      let finalEmail = email;
+      const currentAdminWallet = (process.env.ADMIN_WALLET_ADDRESS || '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266').toLowerCase();
+
+      // If this is the Master Admin logging in for the very first time, auto-generate their profile!
+      if (normalizedAddress === currentAdminWallet) {
+        finalFullName = "System Admin";
+        finalEmail = "admin@didpass.com";
+      }
+
+      if (!finalFullName || !finalEmail) {
         return res.status(400).json({ message: 'fullName and email required for new accounts' });
       }
+      
+      let assignedRole = req.body.isIssuer ? 'ISSUER' : 'HOLDER';
+      if (normalizedAddress === currentAdminWallet) assignedRole = 'ADMIN';
+
       user = new User({
-        fullName,
-        email,
+        fullName: finalFullName,
+        email: finalEmail,
         walletAddress: normalizedAddress,
-        role: req.body.isIssuer ? 'ISSUER' : 'HOLDER'
+        role: assignedRole,
+        organizationName: req.body.isIssuer ? req.body.organizationName : undefined
       });
       await user.save();
       
@@ -98,6 +120,12 @@ router.post('/verify', async (req: Request, res: Response) => {
         ipAddress: req.ip
       });
     } else {
+      const currentAdminWallet = (process.env.ADMIN_WALLET_ADDRESS || '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266').toLowerCase();
+      // Force Admin Role if they match the admin wallet
+      if (normalizedAddress === currentAdminWallet && user.role !== 'ADMIN') {
+        user.role = 'ADMIN';
+      }
+
       // Update nonce to prevent replay attacks
       user.nonce = Math.floor(Math.random() * 1000000).toString();
       await user.save();
@@ -119,7 +147,7 @@ router.post('/verify', async (req: Request, res: Response) => {
       { expiresIn: '1d' }
     );
 
-    res.json({ token, user: { id: user._id, fullName: user.fullName, email: user.email, role: user.role, walletAddress: user.walletAddress } });
+    res.json({ token, user: { id: user._id, fullName: user.fullName, email: user.email, role: user.role, status: user.status, organizationName: user.organizationName, walletAddress: user.walletAddress } });
   } catch (error: any) {
     await Log.create({
       endpoint: req.originalUrl,

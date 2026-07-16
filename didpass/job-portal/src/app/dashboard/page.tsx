@@ -132,28 +132,13 @@ function DashboardContent() {
           </form>
 
           {verifyResult && (
-            <div className={`mt-6 p-5 rounded-xl border ${verifyResult.authentic ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
-              <div className="flex items-start gap-3">
-                <span className="text-2xl">{verifyResult.authentic ? '✅' : '❌'}</span>
-                <div>
-                  <h3 className={`font-bold ${verifyResult.authentic ? 'text-green-800' : 'text-red-800'}`}>
-                    {verifyResult.message}
-                  </h3>
-                  {verifyResult.authentic && (
-                    <div className="mt-3 space-y-1 text-sm text-gray-700 font-mono bg-white p-3 rounded border border-gray-200">
-                      <p><span className="text-gray-400">Issuer:</span> {verifyResult.issuer}</p>
-                      <p><span className="text-gray-400">Timestamp:</span> {verifyResult.timestamp}</p>
-                      <p><span className="text-gray-400">Hash:</span> {verifyResult.documentHash}</p>
-                    </div>
-                  )}
-                  {!verifyResult.authentic && verifyResult.documentHash && (
-                    <div className="mt-3 space-y-1 text-sm text-gray-700 font-mono bg-white p-3 rounded border border-gray-200">
-                      <p><span className="text-gray-400">Hash:</span> {verifyResult.documentHash}</p>
-                      <p className="text-xs mt-2 text-red-500 font-sans">This document hash was not found in the blockchain registry. It may be forged or altered.</p>
-                    </div>
-                  )}
-                </div>
-              </div>
+            <div className={`mt-6 p-5 rounded-xl border flex items-center justify-center gap-3 ${verifyResult.authentic ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
+              <span className="text-2xl">{verifyResult.authentic ? '✅' : '❌'}</span>
+              <h3 className={`text-lg font-bold ${verifyResult.authentic ? 'text-green-800' : 'text-red-800'}`}>
+                {verifyResult.authentic 
+                  ? 'Document is 100% Authentic and Verified' 
+                  : 'Document is Forged or Altered'}
+              </h3>
             </div>
           )}
         </div>
