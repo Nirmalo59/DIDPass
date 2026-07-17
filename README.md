@@ -3,7 +3,7 @@
 </div>
 
 <p align="center">
-  <strong>DIDPass</strong> is a cutting-edge Decentralized Identity and Passwordless Authentication System. It allows users to authenticate seamlessly into consumer platforms (like a Job Portal) using their MetaMask wallet without passwords, while maintaining a secure, blockchain-anchored cryptographic registry for document verification.
+  <strong>DIDPass</strong> is a cutting-edge Decentralized Identity and Passwordless Authentication System. It replaces legacy, vulnerable username-and-password systems with a "Login with Google" style SSO (Single Sign-On) experience, but built natively on the Ethereum blockchain. Users securely authenticate into consumer platforms (like a Job Portal) using their MetaMask wallet. By leveraging cryptographic signatures and zero-knowledge principles, DIDPass ensures absolute data ownership and privacy. Furthermore, DIDPass acts as a secure, blockchain-anchored cryptographic registry for document verification, ensuring that degrees, certificates, and sensitive files are mathematically proven to be authentic without relying on centralized databases.
 </p>
 
 ---
