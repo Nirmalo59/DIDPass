@@ -1,4 +1,4 @@
-# DIDPass: Decentralized Identity & Verification Portal
+# DIDPass: Decentralized Identity & Passwordless Authentication System
 
 DIDPass is a cutting-edge, Web3-based decentralized identity system designed to replace traditional username/password authentication. It allows users to authenticate using cryptographic signatures via MetaMask, enables authorized institutions to anchor verifiable credentials to the Ethereum blockchain, and provides a zero-knowledge approach to third-party verification.
 
